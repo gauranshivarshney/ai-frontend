@@ -23,6 +23,7 @@ An Intercom-style customer support inbox with:
     a. Node.js with Express (API endpoints)
    
 ⚙️ Features
+
 ✅ Conversation list with last message
 
 ✅ Chat interface between agent and user
@@ -36,3 +37,5 @@ An Intercom-style customer support inbox with:
 ✅ Copilot support with "Ask: How do I get a refund?"
 
 ✅ Smooth scroll-to-bottom on new messages
+
+Deployed Link: https://ai-frontend-eight-olive.vercel.app/
