@@ -1,38 +1,427 @@
-.App {
-  text-align: center;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  background: #f5f7fa;
+  color: #333;
 }
 
-.App-logo {
-  height: 40vmin;
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar {
+  width: 250px;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  overflow-y: auto;
+  animation: slideLeft 0.4s ease;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sidebar h2 {
+  margin: 0 0 1rem 0;
+  font-weight: 700;
+  font-size: 1.3rem;
+  border-bottom: 1px solid #4a5a6a;
+  padding-bottom: 0.5rem;
+}
+
+.add-button {
+  padding: 6px 6px;
+  margin-top: 10px;
+}
+
+.conversation {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  gap: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.conversation:hover {
+  background-color: #dceeff;
+  transform: scale(1.02);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.conversation-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.conversation-details strong,
+.conversation-details p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conversation-details p {
+  margin: 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.conversation.active {
+  background-color: #aecef3;
+  color: #515151;
+  border-radius: 8px;
+}
+
+.conversation .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.convo-time {
+  font-size: 0.75rem;
+  color: #888;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 1rem;
+  box-shadow: inset 0 0 5px #ddd;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.chat-panel h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.5rem;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding-right: 10px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.menu-container {
+  position: relative;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s;
+}
+
+.menu-btn:hover {
+  transform: scale(1.1);
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 100;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.menu-container:hover .menu-dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.menu-item {
+  padding: 10px;
+  background: white;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
-.App-link {
-  color: #61dafb;
+.menu-item:hover {
+  background-color: #f0f0f0;
 }
 
-@keyframes App-logo-spin {
+.menu-item.delete {
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  margin: 1rem 0;
+  padding-right: 10px;
+}
+
+.agent-msg,
+.user-msg {
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.6rem;
+  max-width: 70%;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  position: relative;
+  word-wrap: break-word;
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+.agent-msg {
+  background: #e2f0ff;
+  align-self: flex-start;
+  color: #003366;
+}
+
+.user-msg {
+  background: #d1ffd7;
+  align-self: flex-end;
+  color: #065602;
+  margin-bottom: 20px;
+}
+
+.timestamp {
+  font-size: 0.7rem;
+  color: #999;
+  position: absolute;
+  bottom: -14px;
+  right: 10px;
+}
+
+.input-box {
+  display: flex;
+  gap: 0.5rem;
+  border-top: 1px solid #ddd;
+  padding-top: 0.5rem;
+}
+
+.input-box input {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-box input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+}
+
+.input-box button {
+  padding: 0 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #4a90e2;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.input-box button:disabled {
+  background: #a2c4f7;
+  cursor: not-allowed;
+}
+
+.input-box button:hover:not(:disabled) {
+  background: #357bd8;
+  transform: scale(1.03);
+}
+
+.copilot-panel {
+  width: 300px;
+  background: #f0f4f8;
+  padding: 1rem;
+  border-left: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  animation: slideRight 0.4s ease;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.copilot-panel h3 {
+  margin-top: 0;
+}
+
+.copilot-panel button {
+  margin-bottom: 1rem;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.copilot-panel button:hover {
+  background: #357bd8;
+  transform: scale(1.03);
+}
+
+.copilot-reply {
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  color: #222;
+  min-height: 80px;
+}
+
+.ask {
+  margin-top: 10px;
+}
+
+.new-convo {
+  margin-bottom: 1rem;
+  margin-top: 22rem;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #999;
+  margin-left: 8px;
+}
+
+.seen-status {
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 4px;
+  text-align: right;
+  font-style: italic;
+}
+
+.new-convo input {
+  width: calc(100% - 100px);
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.new-convo input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+}
+
+.new-convo button {
+  width: 80px;
+  margin-left: 10px;
+  background: #33a853;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.new-convo button:disabled {
+  background: #a2d7a3;
+  cursor: not-allowed;
+}
+
+.new-convo button:hover:not(:disabled) {
+  background: #2c934a;
+  transform: scale(1.03);
 }
